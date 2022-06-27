@@ -1,9 +1,7 @@
 import {deployPollTs} from "../quad-voting-maci/contracts/build/contracts/ts/deployPollTs.js";
 // import {deployPoll} from "../quad-voting-maci/cli/build/deployPoll.js";
 
-const { ethers } = require('hardhat')
-
-var express = require('express');
+import express from "express";
 export let maciRouter = express.Router();
 
 maciRouter.put('/createpoll', function(req, res, next) {

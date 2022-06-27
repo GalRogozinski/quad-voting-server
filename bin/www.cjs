@@ -11,7 +11,7 @@
 
 var server
 var port = normalizePort(process.env.PORT || '3000');
-import('../app.js').then(app => {
+import('../app.mjs').then(app => {
         app.set('port', port);
         import('http').then(http => {
           /**

@@ -1,5 +1,5 @@
 var express = require('express');
-export let indexRouter = express.Router();
+let indexRouter = express.Router();
 
 /* GET home page. */
 indexRouter.get('/', function(req, res, next) {
@@ -7,4 +7,3 @@ indexRouter.get('/', function(req, res, next) {
 });
 
 module.exports = indexRouter;
-

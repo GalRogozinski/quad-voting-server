@@ -3,14 +3,18 @@ import createError from 'http-errors';
 // var express = import('express');
 import logger from 'morgan';
 import express from "express";
-import path from "path";
 import cookieParser from "cookie-parser";
 
 import indexRouter  from './routes/index.cjs';
 import usersRouter from './routes/users.cjs';
-import {maciRouter}  from './routes/maci.js';
+import {maciRouter}  from './routes/maci.mjs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-var app = express;
+export const app = express();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -42,5 +46,3 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-module.exports = app;

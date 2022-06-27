@@ -1,5 +1,5 @@
 var express = require('express');
-export let usersRouter = express.Router();
+let usersRouter = express.Router();
 
 /* GET users listing. */
 usersRouter.get('/', function(req, res, next) {
