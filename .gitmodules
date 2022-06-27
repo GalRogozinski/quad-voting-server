@@ -1,0 +1,3 @@
+[submodule "quad-voting-maci"]
+	path = quad-voting-maci
+	url = git@github.com:GalRogozinski/quad-voting-maci.git
