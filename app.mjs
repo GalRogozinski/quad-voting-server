@@ -11,7 +11,7 @@ import {maciRouter}  from './routes/maci.mjs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-export const app = express();
+let app = express();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -46,3 +46,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+export default app;
