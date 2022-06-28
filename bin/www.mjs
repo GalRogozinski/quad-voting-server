@@ -3,31 +3,31 @@
 /**
  * Module dependencies.
  */
-// import('debug').then(debug => debug.debug('quad-voting-server:server')).catch(err => console.error(err));
+
+import app from '../app.mjs';
+import debug from 'debug';
+import http from 'http';
 
 /**
  * Get port from environment and store in Express.
  */
 
-var server
-var port = normalizePort(process.env.PORT || '3000');
-import('../app.mjs').then(app => {
-        app.set('port', port);
-        import('http').then(http => {
-          /**
-           * Create HTTP server.
-           */
-            server = http.createServer(app);
-          /**
-           * Listen on provided port, on all network interfaces.
-           */
-            server.listen(port);
-            server.on('error', onError);
-            server.on('listening', onListening);
-        }).catch(err => console.error(err));
-    }
-).catch(err => console.error(err));
+var port = normalizePort(process.env.PORT || '3001');
+app.set('port', port);
 
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
@@ -86,5 +86,5 @@ function onListening() {
     var bind = typeof addr === 'string'
         ? 'pipe ' + addr
         : 'port ' + addr.port;
-    debug('Listening on ' + bind);
+    debug('quad-voting-server:server')('Listening on ' + bind);
 }

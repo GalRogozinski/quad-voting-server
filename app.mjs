@@ -1,6 +1,7 @@
 import createError from 'http-errors';
 // var createError = import('http-errors');
 // var express = import('express');
+// import dotenv from 'dotenv';
 import logger from 'morgan';
 import express from "express";
 import cookieParser from "cookie-parser";
@@ -14,7 +15,10 @@ import { fileURLToPath } from 'url';
 let app = express();
 
 const __filename = fileURLToPath(import.meta.url);
+
 const __dirname = path.dirname(__filename);
+
+// dotenv.config(path: __dirname +'/.env')
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
