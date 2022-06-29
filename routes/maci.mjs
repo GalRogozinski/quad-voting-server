@@ -1,4 +1,4 @@
-import {deployPollApi} from "../quad-voting-maci/contracts/build/cli/ts/deployPollApi.js";
+import {deployPollApi} from "../quad-voting-maci/cli/build/deployPollApi";
 // import {deployPoll} from "../quad-voting-maci/cli/build/deployPoll.js";
 
 import express from "express";
