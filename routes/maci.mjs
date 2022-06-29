@@ -7,12 +7,16 @@ import {MACI_ADDRESS} from "../consts.mjs";
 export let maciRouter = express.Router();
 
 maciRouter.put('/createpoll', async function (req, res, next) {
-    let pollID, pollAddr, pptAddr, verifierAddr = await deployPollApi(MACI_ADDRESS, req.body)
-    res.json({
+    try {
+        let [pollID, pollAddr, pptAddr, verifierAddr] = await deployPollApi(MACI_ADDRESS, req.body)
+        res.json({
             pollID: pollID,
             pollAddr: pollAddr,
             pptAddr: pptAddr,
             verifierAddr: verifierAddr
         });
+    } catch (e) {
+        next(e);
+    }
 });
 
