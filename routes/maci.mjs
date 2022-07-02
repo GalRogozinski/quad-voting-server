@@ -6,8 +6,26 @@ import express from "express";
 import {MACI_ADDRESS, COO_PRIVATE_KEY} from "../consts.mjs";
 
 import {publishMessageApi} from "../quad-voting-maci/cli/ts/publishMessageApi";
+import {replaceAll} from "hardhat/internal/util/strings";
 
 export let maciRouter = express.Router();
+
+maciRouter.get('/polls', async (req, res, next) => {
+    try {
+        await redisClient.lRange("polls", 0, -1, (err, reply) => {
+            if (err) {
+                throw new Error(err)
+            } else if (reply.length > 0) {
+                console.log('Fetching polls from redis: ${reply}')
+                res.body = {polls: reply}
+            } else {
+                console.log('No polls were created yet.')
+            }
+        });
+    } catch (e) {
+        next(e)
+    }
+})
 
 maciRouter.post('/createpoll', async function (req, res, next) {
     try {
@@ -19,7 +37,7 @@ maciRouter.post('/createpoll', async function (req, res, next) {
             pollID: pollID,
             pollAddr: pollAddr,
             pptAddr: pptAddr,
-            verifierAddr: verifierAddress,
+            verifierAddr: verifierAddr,
             description: req.body.description,
             vote_options: req.body.vote_options
         }
@@ -34,7 +52,7 @@ maciRouter.post('/createpoll', async function (req, res, next) {
     }
 });
 
-maciRouter.post('/signup', async (req, res,next) => {
+maciRouter.post('/signup', async (req, res, next) => {
     try {
         let stateID = await signUpApi(MACI_ADDRESS, req.body);
         res.json({stateID: stateID});
