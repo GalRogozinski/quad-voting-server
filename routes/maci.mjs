@@ -1,12 +1,11 @@
 import {deployPollApi} from "../quad-voting-maci/cli/build/deployPollApi.js";
 import {signUpApi} from "../quad-voting-maci/cli/build/signUpApi.js";
-import {redisClient} from "app"
+import {redisClient} from "../app.mjs"
 
 import express from "express";
 import {MACI_ADDRESS, COO_PRIVATE_KEY} from "../consts.mjs";
 
-import {publishMessageApi} from "../quad-voting-maci/cli/ts/publishMessageApi";
-import {replaceAll} from "hardhat/internal/util/strings";
+import {publishMessageApi} from "../quad-voting-maci/cli/build/publishMessageApi.js";
 
 export let maciRouter = express.Router();
 

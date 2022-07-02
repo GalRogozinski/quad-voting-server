@@ -13,6 +13,11 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import redis from 'redis';
 
+//first connect to redis
+// use default localhost:6379
+export const redisClient = redis.createClient();
+await redisClient.connect(redisClient);
+
 let app = express();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -52,6 +57,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-export const redisClient = redis.createClient();
+
 
 export default app;
