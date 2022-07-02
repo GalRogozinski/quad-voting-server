@@ -11,16 +11,8 @@ export let maciRouter = express.Router();
 
 maciRouter.get('/polls', async (req, res, next) => {
     try {
-        await redisClient.lRange("polls", 0, -1, (err, reply) => {
-            if (err) {
-                throw new Error(err)
-            } else if (reply.length > 0) {
-                console.log('Fetching polls from redis: ${reply}')
-                res.body = {polls: reply}
-            } else {
-                console.log('No polls were created yet.')
-            }
-        });
+        const polls = await redisClient.lRange('polls', 0, -1);
+        res.json(polls);
     } catch (e) {
         next(e)
     }
@@ -40,12 +32,13 @@ maciRouter.post('/createpoll', async function (req, res, next) {
             description: req.body.description,
             vote_options: req.body.vote_options
         }
-        await redisClient.rPush(["polls", JSON.stringify(resJson)], (err, reply) => {
+        await redisClient.lPush('polls', JSON.stringify(resJson), (err, reply) => {
             if (err) {
+                console.error("Failed to create poll", err)
                 throw new Error(err);
             }
         })
-        res.body = {resJson};
+        res.json(resJson);
     } catch (e) {
         next(e);
     }
