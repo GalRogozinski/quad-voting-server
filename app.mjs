@@ -11,6 +11,7 @@ import usersRouter from './routes/users.cjs';
 import {maciRouter}  from './routes/maci.mjs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import redis from 'redis';
 
 let app = express();
 
@@ -51,7 +52,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-const redis = require('redis');
 export const redisClient = redis.createClient();
 
 export default app;
