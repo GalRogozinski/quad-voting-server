@@ -12,6 +12,7 @@ import {maciRouter}  from './routes/maci.mjs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import redis from 'redis';
+import cors from "cors";
 
 //first connect to redis
 // use default localhost:6379
@@ -35,6 +36,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors())
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
