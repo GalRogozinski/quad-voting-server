@@ -1,5 +1,6 @@
 import {deployPollApi} from "../quad-voting-maci/cli/build/deployPollApi.js";
 import {signUpApi} from "../quad-voting-maci/cli/build/signUpApi.js";
+import {redisClient} from "app"
 
 import express from "express";
 import {MACI_ADDRESS, COO_PRIVATE_KEY} from "../consts.mjs";
@@ -10,13 +11,24 @@ export let maciRouter = express.Router();
 
 maciRouter.post('/createpoll', async function (req, res, next) {
     try {
+        if (req.body.vote_options.length > req.body.max_vote_options) {
+            throw new Error("the number of given vote options is freater than the allowed max length")
+        }
         let [pollID, pollAddr, pptAddr, verifierAddr] = await deployPollApi(MACI_ADDRESS, req.body);
-        res.json({
+        let resJson = {
             pollID: pollID,
             pollAddr: pollAddr,
             pptAddr: pptAddr,
-            verifierAddr: verifierAddr
-        });
+            verifierAddr: verifierAddress,
+            description: req.body.description,
+            vote_options: req.body.vote_options
+        }
+        await redisClient.rPush(["polls", JSON.stringify(resJson)], (err, reply) => {
+            if (err) {
+                throw new Error(err);
+            }
+        })
+        res.body = {resJson};
     } catch (e) {
         next(e);
     }

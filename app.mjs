@@ -51,4 +51,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+const redis = require('redis');
+export const redisClient = redis.createClient();
+
 export default app;
