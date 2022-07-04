@@ -12,7 +12,7 @@ export let maciRouter = express.Router();
 maciRouter.get('/polls', async (req, res, next) => {
     try {
         const polls = await redisClient.lRange('polls', 0, -1);
-        res.json({polls});
+        res.json(polls);
     } catch (e) {
         next(e)
     }
