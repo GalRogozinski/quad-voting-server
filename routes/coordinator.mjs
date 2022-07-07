@@ -1,11 +1,11 @@
 import {redisClient} from "../app.mjs"
-import config from "config";
+import config from "../config.js";
 import express from "express";
 
-import {mergeSignups} from "../quad-voting-maci/cli/build/mergeSignupsApi";
-import {mergeMessages} from "../quad-voting-maci/cli/build/mergeMessagesAPI";
-import {genProofs} from "../quad-voting-maci/cli/build/genProofsApi";
-import {proveOnChain} from "../quad-voting-maci/cli/build/proveOnChainApi";
+import {mergeSignups} from "../quad-voting-maci/cli/build/mergeSignupsApi.js";
+import {mergeMessages} from "../quad-voting-maci/cli/build/mergeMessagesAPI.js";
+import {genProofs} from "../quad-voting-maci/cli/build/genProofsApi.js";
+import {proveOnChain} from "../quad-voting-maci/cli/build/proveOnChainApi.js";
 
 export let cooRouter = express.Router();
 

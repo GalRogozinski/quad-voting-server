@@ -13,7 +13,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import redis from 'redis';
 import cors from "cors";
-import {cooRouter} from "./routes/coordinator.js";
+import {cooRouter} from "./routes/coordinator.mjs";
 
 //first connect to redis
 // use default localhost:6379
