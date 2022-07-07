@@ -13,6 +13,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import redis from 'redis';
 import cors from "cors";
+import {cooRouter} from "./routes/coordinator.js";
 
 //first connect to redis
 // use default localhost:6379
@@ -41,6 +42,7 @@ app.use(cors())
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/maci', maciRouter);
+app.use('/coo', cooRouter)
 app.use(express.static(path.join(__dirname,)))
 
 // catch 404 and forward to error handler
