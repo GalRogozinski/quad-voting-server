@@ -52,7 +52,7 @@ cooRouter.get('/prove', async function (req, res, next) {
         if (!req.query) {
             throw new Error('No Poll Id is given')
         }
-        const pollID = number(req.query.poll_id)
+        const pollID = Number(req.query.poll_id)
         const mergeOps = {maci_address: conf.MACI_ADDRESS, poll_id: pollID, num_queue_ops: NUM_OF_QUEUE_OPS};
         let reciept = await mergeSignups(mergeOps)
         if (!reciept) {
