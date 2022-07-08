@@ -55,12 +55,12 @@ cooRouter.get('/prove', async function (req, res, next) {
         const pollID = Number(req.query.poll_id)
         const mergeOps = {maci_address: conf.MACI_ADDRESS, poll_id: pollID, num_queue_ops: NUM_OF_QUEUE_OPS};
         console.log("merging signups")
-        let reciept = await mergeSignups(mergeOps)
+        let reciept = await mergeMessages(mergeOps)
         if (!reciept) {
             throw new Error("merge state tree failed")
         }
         console.log("merging messages")
-        reciept = await mergeMessages(mergeOps)
+        reciept = await mergeSignups(mergeOps)
         if (!reciept) {
             throw new Error("merge message tree failed")
         }
