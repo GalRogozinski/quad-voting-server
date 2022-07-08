@@ -54,10 +54,12 @@ cooRouter.get('/prove', async function (req, res, next) {
         }
         const pollID = Number(req.query.poll_id)
         const mergeOps = {maci_address: conf.MACI_ADDRESS, poll_id: pollID, num_queue_ops: NUM_OF_QUEUE_OPS};
+        console.log("merging signups")
         let reciept = await mergeSignups(mergeOps)
         if (!reciept) {
             throw new Error("merge state tree failed")
         }
+        console.log("merging messages")
         reciept = await mergeMessages(mergeOps)
         if (!reciept) {
             throw new Error("merge message tree failed")
@@ -84,12 +86,14 @@ cooRouter.get('/prove', async function (req, res, next) {
             maci_tx_hash: ""
 
         }
+        console.log("generating proofs")
         const proofs = await genProofs(genProofsOps);
         await redisClient.set('tally_poll${pollID}', JSON.stringify(proofs.tallyData))
         const pollJson = await redisClient.get('poll${pollID}');
         const pptAddr = JSON.parse(pollJson).pptAddr
 
 
+        console.log("proove on chain")
         const proveOpts = {
             maci_address: conf.maciAddress,
             poll_id: pollID,
