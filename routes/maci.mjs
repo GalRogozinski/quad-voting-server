@@ -18,33 +18,6 @@ maciRouter.get('/polls', async (req, res, next) => {
     }
 })
 
-maciRouter.post('/createpoll', async function (req, res, next) {
-    try {
-        if (req.body.vote_options.length > req.body.max_vote_options) {
-            throw new Error("the number of given vote options is freater than the allowed max length")
-        }
-        let [pollID, pollAddr, pptAddr, verifierAddr] = await deployPollApi(MACI_ADDRESS, req.body);
-        let resJson = {
-            poll_name: req.body.poll_name,
-            pollID: pollID,
-            pollAddr: pollAddr,
-            pptAddr: pptAddr,
-            verifierAddr: verifierAddr,
-            description: req.body.description,
-            vote_options: req.body.vote_options
-        }
-        await redisClient.lPush('polls', JSON.stringify(resJson), (err, reply) => {
-            if (err) {
-                console.error("Failed to create poll", err)
-                throw new Error(err);
-            }
-        })
-        res.json(resJson);
-    } catch (e) {
-        next(e);
-    }
-});
-
 maciRouter.post('/signup', async (req, res, next) => {
     try {
         let stateID = await signUpApi(MACI_ADDRESS, req.body);

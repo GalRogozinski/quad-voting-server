@@ -6,6 +6,8 @@ import {mergeSignups} from "../quad-voting-maci/cli/build/mergeSignupsApi.js";
 import {mergeMessages} from "../quad-voting-maci/cli/build/mergeMessagesAPI.js";
 import {genProofs} from "../quad-voting-maci/cli/build/genProofsApi.js";
 import {proveOnChain} from "../quad-voting-maci/cli/build/proveOnChainApi.js";
+import {deployPollApi} from "../quad-voting-maci/cli/build/deployPollApi.js";
+
 
 export let cooRouter = express.Router();
 
