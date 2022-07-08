@@ -8,3 +8,5 @@ const conf = {
   "TALLY_ZKEY": "~/quad-voting-server/quad-voting-maci/zkeys/TallyVotes_10-2-1-2_test.0.zkey",
   "SUBSIDY_ZKEY": "~/quad-voting-server/quad-voting-maci/zkeys/SubsidyPerBatch_10-1-2_test.0.zkey"
 }
+
+export {conf}

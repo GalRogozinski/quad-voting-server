@@ -1,5 +1,5 @@
 import {redisClient} from "../app.mjs"
-import config from "../config.js";
+import {conf} from "../config.mjs";
 import express from "express";
 
 import {mergeSignups} from "../quad-voting-maci/cli/build/mergeSignupsApi.js";
@@ -18,7 +18,7 @@ cooRouter.post('/createpoll', async function (req, res, next) {
         if (req.body.vote_options.length > req.body.max_vote_options) {
             throw new Error("the number of given vote options is greater than the allowed max length")
         }
-        let [pollID, pollAddr, pptAddr, verifierAddr] = await deployPollApi(config.MACI_ADDRESS, req.body);
+        let [pollID, pollAddr, pptAddr, verifierAddr] = await deployPollApi(conf.MACI_ADDRESS, req.body);
         let resJson = {
             poll_name: req.body.poll_name,
             pollID: pollID,
@@ -53,7 +53,7 @@ cooRouter.get('/prove', async function (req, res, next) {
             throw new Error('No Poll Id is given')
         }
         const pollID = number(req.query)
-        const mergeOps = {maci_address: config.MACI_ADDRESS, poll_id: pollID, num_queue_ops: NUM_OF_QUEUE_OPS};
+        const mergeOps = {maci_address: conf.MACI_ADDRESS, poll_id: pollID, num_queue_ops: NUM_OF_QUEUE_OPS};
         let reciept = await mergeSignups(mergeOps)
         if (!reciept) {
             throw new Error("merge state tree failed")
@@ -64,10 +64,10 @@ cooRouter.get('/prove', async function (req, res, next) {
         }
 
         const genProofsOps = {
-            coo_sk: config.COO_PRIVATE_KEY,
-            maci_address: config.MACI_ADDRESS,
+            coo_sk: conf.COO_PRIVATE_KEY,
+            maci_address: conf.MACI_ADDRESS,
             poll_id: pollID,
-            rapidsnark: config.RAPIDSNARK,
+            rapidsnark: conf.RAPIDSNARK,
             use_subsidy: false, // TODO maybe change
 
             //witness gens
@@ -76,9 +76,9 @@ cooRouter.get('/prove', async function (req, res, next) {
             subsidy_witnessgen: `../quad-voting-maci/.zkeys/subsidy_witnessgen_poll_${pollID}`,
 
             //zkeys
-            process_zkey: config.PROCESS_ZKEY,
-            tally_zkey: config.TALLY_ZKEY,
-            subsidy_zkey: config.SUBSIDY_ZKEY,
+            process_zkey: conf.PROCESS_ZKEY,
+            tally_zkey: conf.TALLY_ZKEY,
+            subsidy_zkey: conf.SUBSIDY_ZKEY,
 
             //Optional
             maci_tx_hash: ""
@@ -91,7 +91,7 @@ cooRouter.get('/prove', async function (req, res, next) {
 
 
         const proveOpts = {
-            maci_address: config.maciAddress,
+            maci_address: conf.maciAddress,
             poll_id: pollID,
             ppt: pptAddr,
             process_proofs: proofs.processProofs,
