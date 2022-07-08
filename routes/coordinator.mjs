@@ -102,7 +102,7 @@ cooRouter.get('/prove', async function (req, res, next) {
         res.boolean = await proveOnChain(proveOpts)
     }
     catch(e) {
-        console.error("something bad happened while proving a message")
+        console.error("something bad happened while proving a message", e)
         next(e)
     }
 })
