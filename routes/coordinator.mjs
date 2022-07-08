@@ -16,9 +16,9 @@ const NUM_OF_QUEUE_OPS = 4
 cooRouter.post('/createpoll', async function (req, res, next) {
     try {
         if (req.body.vote_options.length > req.body.max_vote_options) {
-            throw new Error("the number of given vote options is freater than the allowed max length")
+            throw new Error("the number of given vote options is greater than the allowed max length")
         }
-        let [pollID, pollAddr, pptAddr, verifierAddr] = await deployPollApi(MACI_ADDRESS, req.body);
+        let [pollID, pollAddr, pptAddr, verifierAddr] = await deployPollApi(config.MACI_ADDRESS, req.body);
         let resJson = {
             poll_name: req.body.poll_name,
             pollID: pollID,
