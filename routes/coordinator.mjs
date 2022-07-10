@@ -88,23 +88,22 @@ cooRouter.get('/prove', async function (req, res, next) {
         }
         console.log("generating proofs")
         const proofs = await genProofs(genProofsOps);
-        await redisClient.set('tally_poll${pollID}', JSON.stringify(proofs.tallyData))
-        const pollJson = await redisClient.get('poll${pollID}');
-        const pptAddr = JSON.parse(pollJson).pptAddr
-
-
-        console.log("proove on chain")
-        const proveOpts = {
-            maci_address: conf.maciAddress,
-            poll_id: pollID,
-            ppt: pptAddr,
-            process_proofs: proofs.processProofs,
-            tallyProofs: proofs.processProofs,
-            subsidy_proofs: proofs.subsidy_proofs,
-            tally_proofs: proofs.tallyProofs
-        };
-        res.boolean = await proveOnChain(proveOpts)
-    }
+        await redisClient.set(`tally_poll${pollID}`, JSON.stringify(proofs.tallyData))
+        const reply = await redisClient.get(`poll${pollID}`)
+        const pptAddr = JSON.parse(reply).pptAddr
+            console.log("prove on chain")
+            const proveOpts = {
+                maci_address: conf.MACI_ADDRESS,
+                poll_id: pollID,
+                ppt: pptAddr,
+                process_proofs: proofs.processProofs,
+                tallyProofs: proofs.processProofs,
+                subsidy_proofs: proofs.subsidyProofs,
+                tally_proofs: proofs.tallyProofs
+            };
+            const result = await proveOnChain(proveOpts)
+            res.json({"verificationResult": result}) 
+        }
     catch(e) {
         console.error("something bad happened while proving a message", e)
         next(e)
