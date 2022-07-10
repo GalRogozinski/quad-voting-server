@@ -88,7 +88,7 @@ cooRouter.get('/prove', async function (req, res, next) {
         }
         console.log("generating proofs")
         const proofs = await genProofs(genProofsOps);
-        await redisClient.set(`tally_poll${pollID}`, JSON.stringify(proofs.tallyData))
+        await redisClient.lPush(`tally_poll${pollID}`, JSON.stringify(proofs.tallyData), Json.stringify(proofs.subsidyData))
         const reply = await redisClient.get(`poll${pollID}`)
         const pptAddr = JSON.parse(reply).pptAddr
             console.log("prove on chain")
