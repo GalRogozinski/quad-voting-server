@@ -102,7 +102,13 @@ cooRouter.get('/prove', async function (req, res, next) {
                 tally_proofs: proofs.tallyProofs
             };
             const result = await proveOnChain(proveOpts)
-            res.json({"verificationResult": result}) 
+            if (result) {
+                res.json(proofs) 
+            }
+            else {
+                throw new Error("failed to store on chain")
+            }
+    
         }
     catch(e) {
         console.error("something bad happened while proving a message", e)
