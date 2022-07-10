@@ -73,9 +73,9 @@ cooRouter.get('/prove', async function (req, res, next) {
             use_subsidy: false, // TODO maybe change
 
             //witness gens
-            process_witnessgen: `../quad-voting-maci/.zkeys/process_witnessgen_poll_${pollID}`,
-            tally_witnessgen: `../quad-voting-maci/.zkeys/tally_witnessgen_poll_${pollID}`,
-            subsidy_witnessgen: `../quad-voting-maci/.zkeys/subsidy_witnessgen_poll_${pollID}`,
+            process_witnessgen: conf.PROCESS_WITNESS_GEN,
+            tally_witnessgen: conf.TALLY_WITNESS_GEN,
+            subsidy_witnessgen: conf.SUBSIDY_WITNESS_GEN,
 
             //zkeys
             process_zkey: conf.PROCESS_ZKEY,
