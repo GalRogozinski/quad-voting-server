@@ -19,11 +19,14 @@ cooRouter.post('/createpoll', async function (req, res, next) {
             throw new Error("the number of given vote options is greater than the allowed max length")
         }
         let [pollID, pollAddr, pptAddr, verifierAddr] = await deployPollApi(conf.MACI_ADDRESS, req.body);
+        const expirationTime = Date.now() + Number(req.body.duration) * 1000;
         let resJson = {
             poll_name: req.body.poll_name,
             pollID: pollID,
+            maciAddress: conf.MACI_ADDRESS,
             pollAddr: pollAddr,
             pptAddr: pptAddr,
+            expirationDate: new Date(expirationTime).toISOString(),
             verifierAddr: verifierAddr,
             description: req.body.description,
             vote_options: req.body.vote_options
@@ -36,7 +39,7 @@ cooRouter.post('/createpoll', async function (req, res, next) {
         })
         await redisClient.set(`poll${pollID}`, JSON.stringify(resJson), (err, reply) => {
             if (err) {
-                console.error("Failed to add poll to db", err)
+                console.error("Failed ביto add poll to db", err)
                 throw new Error(err);
             }
         })
