@@ -20,13 +20,16 @@ cooRouter.post('/createpoll', async function (req, res, next) {
         }
         let [pollID, pollAddr, pptAddr, verifierAddr] = await deployPollApi(conf.MACI_ADDRESS, req.body);
         const expirationTime = Date.now() + Number(req.body.duration) * 1000;
+        //remove Z in the end
+        const expString = new Date(expirationTime).toISOString().slice(0, -1)
+        console.log(`Poll ${pollID} expires at ${expString}`)
         let resJson = {
             poll_name: req.body.poll_name,
             pollID: pollID,
             maciAddress: conf.MACI_ADDRESS,
             pollAddr: pollAddr,
             pptAddr: pptAddr,
-            expirationDate: new Date(expirationTime).toISOString(),
+            expirationDate: expString,
             verifierAddr: verifierAddr,
             description: req.body.description,
             vote_options: req.body.vote_options
@@ -39,7 +42,7 @@ cooRouter.post('/createpoll', async function (req, res, next) {
         })
         await redisClient.set(`poll${pollID}`, JSON.stringify(resJson), (err, reply) => {
             if (err) {
-                console.error("Failed ביto add poll to db", err)
+                console.error("Failed to add poll to db", err)
                 throw new Error(err);
             }
         })
@@ -91,10 +94,17 @@ cooRouter.get('/prove', async function (req, res, next) {
         }
         console.log("generating proofs")
         const proofs = await genProofs(genProofsOps);
-        await redisClient.lPush(`tally_poll${pollID}`, JSON.stringify(proofs.tallyData), Json.stringify(proofs.subsidyData))
+        if (proofs.tallyData) {
+            await redisClient.lPush(`tally_poll${pollID}`, JSON.stringify(proofs.tallyData))
+        }
+        if (proofs.subsidyData) {
+            await redisClient.lPush(`tally_poll${pollID}`, Json.stringify(proofs.subsidyData))
+        }
         const reply = await redisClient.get(`poll${pollID}`)
         const pptAddr = JSON.parse(reply).pptAddr
             console.log("prove on chain")
+            console.log(pptAddr)
+
             const proveOpts = {
                 maci_address: conf.MACI_ADDRESS,
                 poll_id: pollID,

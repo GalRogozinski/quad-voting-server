@@ -17,6 +17,15 @@ maciRouter.get('/polls', async (req, res, next) => {
     }
 })
 
+maciRouter.get('/tallyResults', async (req, res, next) => {
+    try {
+    const tallyResults = await redisClient.lRange(`tally_poll${req.query.pollID}`, 0, -1);
+    res.json(tallyResults);
+    } catch (e) {
+        next(e)
+    }
+})
+
 maciRouter.post('/signup', async (req, res, next) => {
     try {
         let stateID = await signUpApi(conf.MACI_ADDRESS, req.body);
@@ -34,4 +43,3 @@ maciRouter.post('/publishMessage', async (req, res, next) => {
         next(e);
     }
 })
-
